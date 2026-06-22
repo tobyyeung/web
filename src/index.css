@@ -2,18 +2,18 @@
 
 :root {
   /* Color Palette - Premium Dark Mode */
-  --bg-primary: #0a0a0c;
-  --bg-secondary: #121216;
-  --bg-glass: rgba(10, 10, 12, 0.85);
-  --border-glass: rgba(255, 255, 255, 0.08);
+  --bg-primary: #0A1325;
+  --bg-secondary: #070e1c;
+  --bg-glass: rgba(10, 19, 37, 0.85);
+  --border-glass: rgba(58, 197, 163, 0.15);
   
   --text-primary: #ffffff;
   --text-secondary: #a0a0ab;
   --text-tertiary: #6b6b75;
   
-  --accent-primary: #6366f1;
+  --accent-primary: #3AC5A3;
   --accent-secondary: #a855f7;
-  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-primary));
   --accent-gradient-hover: linear-gradient(135deg, #818cf8, #c084fc);
   
   --danger: #ef4444;
@@ -61,6 +61,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
+  color: var(--accent-primary);
 }
 
 a {
@@ -309,6 +310,51 @@ button {
 
 .full-desc {
   opacity: 1;
+}
+
+/* Project Card Hover Layout */
+.project-card-wrapper {
+  position: relative;
+  height: 450px;
+  width: 100%;
+}
+
+.project-card-hoverable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  overflow: hidden;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+}
+
+.project-card-hoverable:not(:hover)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  pointer-events: none;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.project-card-hoverable:hover {
+  height: auto;
+  min-height: 100%;
+  z-index: 20;
+  box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 768px) {

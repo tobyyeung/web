@@ -6,7 +6,15 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [hoveredExpId, setHoveredExpId] = useState(null);
+  const [activeSkillCategory, setActiveSkillCategory] = useState("Languages");
 
+  const skillsData = {
+    "Languages": ["C++", "Python", "Java", "SQL", "JavaScript", "HTML/CSS", "Lua", "Markdown", "LaTeX"],
+    "AI/ML": ["Local LLMs (Ollama)", "RAG", "Semantic Search", "Embeddings", "LangChain", "OpenCV"],
+    "Backend & Web": ["FastAPI", "React", "Next.js", "Flask", "REST APIs", "OAuth", "Uvicorn", "Pydantic", "Pandas", "NumPy"],
+    "Data & Cloud": ["AWS", "Docker", "Kubernetes", "Vercel", "Supabase", "PostgreSQL", "DuckDB", "ChromaDB", "MySQL", "SQLite"],
+    "Tools & OS": ["Git", "Conda", "Pytest", "Linux (Ubuntu)", "Bash", "VS Code", "MATLAB", "R"]
+  };
   const uiucCourses = [
     "CS 374: Introduction to Algorithms & Models of Computation",
     "CS 340: Computer Systems",
@@ -22,13 +30,13 @@ const Home = () => {
     "ECON 103: Macroeconomic Principles",
     "ECON 102: Microeconomic Principles"
   ];
-  
+
   const displayedCourses = showAllCourses ? uiucCourses : uiucCourses.slice(0, 3);
 
   const ucsdCourses = [
-    "Deep Neural Networks",
-    "Machine Learning Algorithms",
-    "Python & Math for Machine Learning"
+    "CSE-90161: Deep Neural Networks",
+    "CSE-90160: Machine Learning Algorithms",
+    "CSE-90162: Python & Math for Machine Learning"
   ];
 
   useEffect(() => {
@@ -116,10 +124,14 @@ const Home = () => {
           <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', maxWidth: '600px', marginBottom: '2.5rem' }}>
             A passionate software engineer building scalable web applications and intelligent data systems.
           </p>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">Get in Touch</a>
-            <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">GitHub</a>
-            <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">LinkedIn</a>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">Email Me</a>
+            <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem' }} aria-label="GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 8 18v4"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem' }} aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
           </div>
         </div>
       </section>
@@ -128,10 +140,10 @@ const Home = () => {
       <section id="experience" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
         <div className="container">
           <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Experience</h2>
-          
+
           <div className="timeline-abs-container" style={{ height: `${TIMELINE_HEIGHT + 150}px`, marginTop: '4rem' }}>
             <div className="timeline-abs-line"></div>
-            
+
             {yearMarkers.map(year => {
               const monthsFromEnd = (END_YEAR - year) * 12 + (END_MONTH - 1);
               const topPx = monthsFromEnd * PIXELS_PER_MONTH;
@@ -148,7 +160,7 @@ const Home = () => {
               const duration = (exp.endY - exp.startY) * 12 + (exp.endM - exp.startM);
               const topPx = monthsFromEnd * PIXELS_PER_MONTH;
               const heightPx = Math.max(duration * PIXELS_PER_MONTH, 160);
-              
+
               // Ensure higher priority (closer to timeline) naturally sits on top of lower priority (offset) ones
               const zIndex = hoveredExpId === exp.id ? 200 : (exp.overlapOffset ? 10 : 100);
 
@@ -157,9 +169,9 @@ const Home = () => {
               const xShift = exp.overlapOffset ? (isRight ? `${exp.overlapOffset * 3}rem` : `-${exp.overlapOffset * 3}rem`) : '0';
 
               return (
-                <div 
-                  key={exp.id} 
-                  className={`timeline-item-abs ${exp.side}`} 
+                <div
+                  key={exp.id}
+                  className={`timeline-item-abs ${exp.side}`}
                   style={{ top: `${topPx}px`, height: `${heightPx}px`, zIndex }}
                   onMouseEnter={() => setHoveredExpId(exp.id)}
                   onMouseLeave={() => setHoveredExpId(null)}
@@ -171,9 +183,9 @@ const Home = () => {
                       <span style={{ color: 'var(--accent-primary)', fontWeight: '500', fontSize: '0.9rem' }}>{exp.dateStr}</span>
                     </div>
                     <h4 style={{ color: 'var(--text-secondary)', fontWeight: '400', marginBottom: '1rem', fontSize: '1rem' }}>{exp.role}</h4>
-                    
+
                     <p className="short-desc">{exp.shortDesc}</p>
-                    
+
                     <div className="full-desc">
                       <ul style={{ color: 'var(--text-secondary)', paddingLeft: '1.2rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem' }}>
                         {exp.bullets.map((bullet, idx) => (
@@ -195,15 +207,14 @@ const Home = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
             <div>
               <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Projects</h2>
-              <p style={{ color: 'var(--text-secondary)' }}>A selection of my recent work</p>
             </div>
           </div>
-          
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '6rem',
-            paddingTop: '2rem'
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(330px, 1fr))',
+            gap: '2.5rem',
+            paddingTop: '1rem'
           }}>
             {projects.length > 0 ? (
               projects.map((project, index) => (
@@ -216,97 +227,142 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Education & Skills Section */}
-      <section id="education-skills" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
+      {/* Education Section */}
+      <section id="education" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
         <div className="container">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem' }}>
-            
-            {/* Education */}
-            <div style={{ flex: '1 1 400px' }}>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Education</h2>
-              
-              <div style={{ marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Education</h2>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div className="glass-panel" style={{ display: 'flex', flexWrap: 'wrap-reverse', justifyContent: 'space-between', alignItems: 'center', padding: '2rem', gap: '2rem' }}>
+              <div style={{ flex: '1 1 300px' }}>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>University of Illinois Urbana-Champaign</h3>
                 <p style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem', fontWeight: '500' }}>B.S. in Computer Science and Economics (Expected May 2028)</p>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>GPA: 4.0/4.0 (Dean's List)</p>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                  <strong>Courses:</strong>
-                  <ul style={{ paddingLeft: '1.5rem', marginTop: '0.25rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>Courses:</strong>
+                  <ul style={{ paddingLeft: '1.5rem', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                     {displayedCourses.map(course => (
                       <li key={course}>{course}</li>
                     ))}
                   </ul>
-                  <button 
-                    onClick={() => setShowAllCourses(!showAllCourses)} 
-                    style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', cursor: 'pointer', padding: 0, marginTop: '0.5rem', fontWeight: '500', fontSize: '0.9rem', textDecoration: 'underline' }}
+                  <button
+                    onClick={() => setShowAllCourses(!showAllCourses)}
+                    style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', cursor: 'pointer', padding: 0, marginTop: '0.75rem', fontWeight: '500', fontSize: '0.9rem', textDecoration: 'underline' }}
                   >
                     {showAllCourses ? 'Show less' : `Show ${uiucCourses.length - 3} more...`}
                   </button>
                 </div>
               </div>
+              <div style={{ background: '#ffffff', padding: '1rem', borderRadius: '8px', width: '220px', minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <img src="/images/education/uiuc.png" alt="University of Illinois Logo" style={{ maxWidth: '100%', maxHeight: '100px', objectFit: 'contain' }} />
+              </div>
+            </div>
 
-              <div>
+            <div className="glass-panel" style={{ display: 'flex', flexWrap: 'wrap-reverse', justifyContent: 'space-between', alignItems: 'center', padding: '2rem', gap: '2rem' }}>
+              <div style={{ flex: '1 1 300px' }}>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>UC San Diego Extended Studies</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>GPA: 4.0/4.0</p>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>
-                  <strong>Courses:</strong>
-                  <ul style={{ paddingLeft: '1.5rem', marginTop: '0.25rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>Courses:</strong>
+                  <ul style={{ paddingLeft: '1.5rem', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                     {ucsdCourses.map(course => (
                       <li key={course}>{course}</li>
                     ))}
                   </ul>
                 </div>
               </div>
-
-              {/* Honors & Awards */}
-              <div style={{ marginTop: '4rem' }}>
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Honors & Awards</h2>
-                
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>The Coder Games 2020 Typed Bracket Winner</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>theCoderSchool (Apr 2020)</p>
-                </div>
-                
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>8th Place, 2022-23 CalChess Super States Championship</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>BayAreaChess</p>
-                </div>
-
-                <div>
-                  <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>AP Test Scores</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Calculus AB (5), Chinese (5)</p>
-                </div>
+              <div style={{ background: '#ffffff', padding: '1rem', borderRadius: '8px', width: '220px', minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <img src="/images/education/ucsd.png" alt="UC San Diego Logo" style={{ maxWidth: '100%', maxHeight: '100px', objectFit: 'contain' }} />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Skills */}
-            <div style={{ flex: '1 1 400px' }}>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Skills</h2>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div>
-                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.25rem' }}>Languages</h4>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>C++, Python, Java, SQL, JavaScript, HTML/CSS, Lua, Markdown, LaTeX</p>
+      {/* Skills Section */}
+      <section id="skills" style={{ padding: '6rem 0' }}>
+        <div className="container">
+          <h2 style={{ fontSize: '3rem', marginBottom: '3rem', textAlign: 'center' }}>Skills</h2>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '4rem' }}>
+            {Object.keys(skillsData).map(category => (
+              <button
+                key={category}
+                onClick={() => setActiveSkillCategory(category)}
+                style={{
+                  padding: '0.6rem 1.25rem',
+                  borderRadius: '9999px',
+                  background: activeSkillCategory === category ? 'var(--accent-primary)' : 'var(--bg-glass)',
+                  border: `1px solid ${activeSkillCategory === category ? 'var(--accent-primary)' : 'var(--border-glass)'}`,
+                  color: activeSkillCategory === category ? 'var(--bg-primary)' : 'var(--text-secondary)',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.95rem'
+                }}
+              >
+                {category}
+                <span style={{
+                  background: activeSkillCategory === category ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.05)',
+                  padding: '0.15rem 0.6rem',
+                  borderRadius: '9999px',
+                  fontSize: '0.8rem',
+                  color: activeSkillCategory === category ? 'var(--bg-primary)' : 'var(--text-tertiary)'
+                }}>
+                  {skillsData[category].length}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+            gap: '1.5rem',
+            justifyItems: 'center',
+            maxWidth: '900px',
+            margin: '0 auto'
+          }}>
+            {skillsData[activeSkillCategory].map(skill => (
+              <div key={skill} className="glass-panel" style={{
+                width: '100%',
+                aspectRatio: '1/1',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '1.5rem 1rem',
+                textAlign: 'center',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                cursor: 'default',
+                borderRadius: '16px'
+              }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1rem',
+                  color: 'var(--text-primary)'
+                }}>
+                  <span style={{ fontSize: '1.25rem', fontFamily: 'var(--font-display)', fontWeight: 'bold' }}>
+                    {skill.charAt(0)}
+                  </span>
                 </div>
-                <div>
-                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.25rem' }}>AI/ML</h4>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Local LLMs (Ollama Gemma), RAG, Semantic Search, Embeddings, Structured Outputs, LangChain, OpenCV</p>
-                </div>
-                <div>
-                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.25rem' }}>Backend & Web</h4>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>FastAPI, React, Next.js, Flask, REST APIs, OAuth, Uvicorn, Pydantic, Pandas, NumPy</p>
-                </div>
-                <div>
-                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.25rem' }}>Data & Cloud</h4>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>AWS, Docker, Kubernetes, Vercel, Supabase, PostgreSQL, DuckDB, ChromaDB, MySQL, SQLite</p>
-                </div>
-                <div>
-                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '0.25rem' }}>Tools & OS</h4>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Git, Conda, Pytest, Linux (Ubuntu), Bash, VS Code, MATLAB, R</p>
-                </div>
+                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: '500' }}>
+                  {skill}
+                </span>
               </div>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
@@ -314,9 +370,9 @@ const Home = () => {
       {/* Contact Section */}
       <section id="contact" style={{ padding: '6rem 0', textAlign: 'center' }}>
         <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Get In Touch</h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Contact Me</h2>
           <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 2rem' }}>
-            I'm currently open to new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+            I'm currently open to new opportunities. Whether you have a question or just want to say hi, I'll always get back to you!
           </p>
           <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">tobycyeung@gmail.com</a>
