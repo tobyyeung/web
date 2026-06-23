@@ -54,6 +54,7 @@ const Home = () => {
   const experiences = [
     {
       id: 'invite', title: 'INVITE AI Institute', role: 'AI Researcher', dateStr: 'Jun 2026 - Present',
+      logo: '/images/experience/invite.jpg',
       startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left',
       shortDesc: 'Architecting intelligent RAG systems and full-stack applications to empower educators with data-driven insights.',
       bullets: [
@@ -64,6 +65,7 @@ const Home = () => {
     },
     {
       id: 'mathnasium', title: 'Mathnasium', role: 'Mathematics Instructor', dateStr: 'Jan 2024 - Aug 2025',
+      logo: '/images/experience/mathnasium.jpg',
       startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right',
       shortDesc: 'Provided tailored mathematical instruction and competition coaching for K-12 students of all learning abilities.',
       bullets: [
@@ -74,6 +76,7 @@ const Home = () => {
     },
     {
       id: 'techknowhow_lead', title: 'TechKnowHow Franchises', role: 'Lead Instructor', dateStr: 'May 2024 - Aug 2024',
+      logo: '/images/experience/techknowhow.jpg',
       startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', overlapOffset: 1,
       shortDesc: 'Led robotics and coding classes of 20+ students, ensuring individualized instruction in Python and Roblox.',
       bullets: [
@@ -83,6 +86,7 @@ const Home = () => {
     },
     {
       id: 'thecoderschool', title: 'theCoderSchool', role: 'Code Coach', dateStr: 'Aug 2023 - Jan 2024',
+      logo: '/images/experience/thecoderschool.jpg',
       startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'left', overlapOffset: 1,
       shortDesc: 'Mentored students in foundational computer science logic through custom game development in Python and Scratch.',
       bullets: [
@@ -92,6 +96,7 @@ const Home = () => {
     },
     {
       id: 'techknowhow_asst', title: 'TechKnowHow Franchises', role: 'Assistant Lead Instructor', dateStr: 'May 2023 - Aug 2023',
+      logo: '/images/experience/techknowhow.jpg',
       startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'right',
       shortDesc: 'Guided young learners through engaging robotics and coding camps, fostering early technical interest.',
       bullets: [
@@ -101,6 +106,7 @@ const Home = () => {
     },
     {
       id: 'kesselworks', title: 'KesselWorks, LLC', role: 'Software Developer & UI/UX Intern', dateStr: 'Jun 2022 - Aug 2024',
+      logo: '/images/experience/kesselworks.jpg',
       startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left',
       shortDesc: 'Engineered full-stack organizational tools, optimized cloud infrastructure, and redesigned mission-critical user interfaces.',
       bullets: [
@@ -118,11 +124,12 @@ const Home = () => {
       {/* Hero Section */}
       <section style={{ padding: '6rem 0 4rem', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
         <div className="container">
-          <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
-            Hi, I'm <span className="gradient-text">Toby Yeung</span>
+          <h1 style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
+            <span style={{ fontSize: '2.5rem', color: 'var(--text-primary)', fontWeight: '500' }}>Hi, I'm</span>
+            <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block' }}>Toby Yeung</span>
           </h1>
-          <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', maxWidth: '600px', marginBottom: '2.5rem' }}>
-            A passionate software engineer building scalable web applications and intelligent data systems.
+          <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6' }}>
+            A CS & Econ student @ UIUC, specializing in building full-stack apps, containerized microservices, and AI systems.
           </p>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">Email Me</a>
@@ -178,11 +185,18 @@ const Home = () => {
                 >
                   <div className="timeline-dot-abs"></div>
                   <div className="glass-panel" style={{ left: xShift, transition: 'left 0.4s ease, all 0.3s ease' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                      <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{exp.title}</h3>
-                      <span style={{ color: 'var(--accent-primary)', fontWeight: '500', fontSize: '0.9rem' }}>{exp.dateStr}</span>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                      <div style={{ background: '#ffffff', padding: '0.5rem', borderRadius: '8px', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <img src={exp.logo} alt={`${exp.title} Logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
+                          <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{exp.title}</h3>
+                          <span style={{ color: 'var(--accent-primary)', fontWeight: '500', fontSize: '0.9rem' }}>{exp.dateStr}</span>
+                        </div>
+                        <h4 style={{ color: 'var(--text-secondary)', fontWeight: '400', margin: '0.25rem 0 0 0', fontSize: '1rem' }}>{exp.role}</h4>
+                      </div>
                     </div>
-                    <h4 style={{ color: 'var(--text-secondary)', fontWeight: '400', marginBottom: '1rem', fontSize: '1rem' }}>{exp.role}</h4>
 
                     <p className="short-desc">{exp.shortDesc}</p>
 
@@ -235,7 +249,7 @@ const Home = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div className="glass-panel" style={{ display: 'flex', flexWrap: 'wrap-reverse', justifyContent: 'space-between', alignItems: 'center', padding: '2rem', gap: '2rem' }}>
               <div style={{ flex: '1 1 300px' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>University of Illinois Urbana-Champaign</h3>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}><a href="https://illinois.edu/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>University of Illinois Urbana-Champaign</a></h3>
                 <p style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem', fontWeight: '500' }}>B.S. in Computer Science and Economics (Expected May 2028)</p>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>GPA: 4.0/4.0 (Dean's List)</p>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem', marginTop: '0.5rem' }}>
@@ -260,7 +274,7 @@ const Home = () => {
 
             <div className="glass-panel" style={{ display: 'flex', flexWrap: 'wrap-reverse', justifyContent: 'space-between', alignItems: 'center', padding: '2rem', gap: '2rem' }}>
               <div style={{ flex: '1 1 300px' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>UC San Diego Extended Studies</h3>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}><a href="https://extendedstudies.ucsd.edu/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>UC San Diego Extended Studies</a></h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>GPA: 4.0/4.0</p>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>
                   <strong style={{ color: 'var(--text-primary)' }}>Courses:</strong>
@@ -378,7 +392,7 @@ const Home = () => {
             <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">tobycyeung@gmail.com</a>
             <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">GitHub</a>
             <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">LinkedIn</a>
-            <a href="tel:6692121472" className="btn btn-secondary">(669) 212-1472</a>
+
           </div>
         </div>
       </section>
