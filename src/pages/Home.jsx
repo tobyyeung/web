@@ -46,19 +46,12 @@ const Home = () => {
     setProjects(getProjects());
   }, []);
 
-  const PIXELS_PER_MONTH = 15;
-  const END_YEAR = 2026;
-  const END_MONTH = 8;
-  const START_YEAR = 2022;
-  const START_MONTH = 6;
-  const totalMonths = (END_YEAR - START_YEAR) * 12 + (END_MONTH - START_MONTH);
-  const TIMELINE_HEIGHT = totalMonths * PIXELS_PER_MONTH + 40;
 
   const experiences = [
     {
       id: 'invite', title: 'INVITE AI Institute', role: 'AI Researcher', dateStr: 'Jun 2026 - Present',
       logo: '/images/experience/invite.jpg',
-      startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left',
+      startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left', expandedHeight: 180,
       shortDesc: 'Architecting intelligent RAG systems and full-stack applications to empower educators with data-driven insights.',
       bullets: [
         'Developed the Keating Framework, a full-stack AI web application using FastAPI and Python to assist educators in identifying at-risk students by synthesizing academic and behavioral data.',
@@ -69,7 +62,7 @@ const Home = () => {
     {
       id: 'mathnasium', title: 'Mathnasium', role: 'Mathematics Instructor', dateStr: 'Jan 2024 - Aug 2025',
       logo: '/images/experience/mathnasium.jpg',
-      startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right',
+      startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right', expandedHeight: 150,
       shortDesc: 'Provided tailored mathematical instruction and competition coaching for K-12 students of all learning abilities.',
       bullets: [
         'Provided 1-on-1 to 1-on-4 tutoring to 300+ students (K–12), from arithmetic to SAT Math and pre-calculus.',
@@ -80,7 +73,7 @@ const Home = () => {
     {
       id: 'techknowhow_lead', title: 'TechKnowHow Franchises', role: 'Lead Instructor', dateStr: 'May 2024 - Aug 2024',
       logo: '/images/experience/techknowhow.jpg',
-      startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', overlapOffset: 1,
+      startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', overlapOffset: 1, expandedHeight: 90,
       shortDesc: 'Led robotics and coding classes of 20+ students, ensuring individualized instruction in Python and Roblox.',
       bullets: [
         'Mentored 250+ students in robotics and coding using Scratch, Roblox, and Minecraft.',
@@ -90,7 +83,7 @@ const Home = () => {
     {
       id: 'thecoderschool', title: 'theCoderSchool', role: 'Code Coach', dateStr: 'Aug 2023 - Jan 2024',
       logo: '/images/experience/thecoderschool.jpg',
-      startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'left', overlapOffset: 1,
+      startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'right', expandedHeight: 90,
       shortDesc: 'Mentored students in foundational computer science logic through custom game development in Python and Scratch.',
       bullets: [
         'Coached 30+ students (ages 8–12) in Scratch, Python, and PixelPad.',
@@ -100,7 +93,7 @@ const Home = () => {
     {
       id: 'techknowhow_asst', title: 'TechKnowHow Franchises', role: 'Assistant Lead Instructor', dateStr: 'May 2023 - Aug 2023',
       logo: '/images/experience/techknowhow.jpg',
-      startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'right',
+      startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'left', overlapOffset: 1, expandedHeight: 90,
       shortDesc: 'Guided young learners through engaging robotics and coding camps, fostering early technical interest.',
       bullets: [
         'Assisted in mentoring students (ages 5–12) in introductory robotics and block-based coding.',
@@ -110,7 +103,7 @@ const Home = () => {
     {
       id: 'kesselworks', title: 'KesselWorks, LLC', role: 'Software Developer & UI/UX Intern', dateStr: 'Jun 2022 - Aug 2024',
       logo: '/images/experience/kesselworks.jpg',
-      startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left',
+      startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left', expandedHeight: 170,
       shortDesc: 'Engineered full-stack organizational tools, optimized cloud infrastructure, and redesigned mission-critical user interfaces.',
       bullets: [
         'Engineered a cloud-based calendar system using React and JavaScript, enabling internal teams to track project timelines and coordinate contractor availability.',
@@ -120,6 +113,51 @@ const Home = () => {
     }
   ];
 
+
+
+  const END_YEAR = 2026;
+  const END_MONTH = 8;
+  const START_YEAR = 2022;
+  const START_MONTH = 1;
+
+  const getPixelsForMonth = (y, m) => {
+    // 2025-26 and the beginning years (2022) have reduced scale
+    let px = (y >= 2025 || y <= 2022) ? 8 : 22;
+
+    if (hoveredExpId) {
+      const hoveredExp = experiences.find(e => e.id === hoveredExpId);
+      if (hoveredExp) {
+        const mVal = y * 12 + m;
+        const startVal = hoveredExp.startY * 12 + hoveredExp.startM;
+        const endVal = hoveredExp.endY * 12 + hoveredExp.endM;
+        
+        if (mVal > startVal && mVal <= endVal) {
+          const duration = Math.max(1, endVal - startVal);
+          // Distribute the expandedHeight + 50px buffer to ensure no overlap and clean spacing
+          px += (hoveredExp.expandedHeight + 50) / duration;
+        }
+      }
+    }
+    return px;
+  };
+
+  const getPositionForDate = (y, m) => {
+    let px = 0;
+    let currentY = END_YEAR;
+    let currentM = END_MONTH;
+    
+    while (currentY > y || (currentY === y && currentM > m)) {
+      currentM--;
+      if (currentM === 0) {
+        currentM = 12;
+        currentY--;
+      }
+      px += getPixelsForMonth(currentY, currentM);
+    }
+    return px;
+  };
+
+  const TIMELINE_HEIGHT = getPositionForDate(START_YEAR, START_MONTH) + 30;
   const yearMarkers = [2026, 2025, 2024, 2023, 2022];
 
   return (
@@ -161,66 +199,184 @@ const Home = () => {
       {/* Experience Section */}
       <section id="experience" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
         <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Experience</h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '4rem', textAlign: 'center' }}>Experience</h2>
 
-          <div className="timeline-abs-container" style={{ height: `${TIMELINE_HEIGHT + 150}px`, marginTop: '4rem' }}>
-            <div className="timeline-abs-line"></div>
+          <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto', height: `${TIMELINE_HEIGHT}px`, transition: 'height 0.3s ease-in-out' }}>
+            {/* The Central Vertical Spine */}
+            <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', width: '4px', background: 'var(--border-glass)', height: '100%', borderRadius: '4px' }}></div>
 
             {yearMarkers.map(year => {
-              const monthsFromEnd = (END_YEAR - year) * 12 + (END_MONTH - 1);
-              const topPx = monthsFromEnd * PIXELS_PER_MONTH;
+              const topPx = getPositionForDate(year, 1);
 
               return (
-                <div key={year} className="timeline-year-marker" style={{ top: `${topPx}px` }}>
+                <div key={year} style={{
+                  position: 'absolute',
+                  top: `${topPx}px`,
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  background: 'var(--bg-primary)',
+                  border: '1px solid var(--border-glass)',
+                  boxShadow: 'var(--shadow-sm)',
+                  padding: '0.25rem 0.6rem',
+                  borderRadius: '6px',
+                  color: 'var(--text-primary)',
+                  fontSize: '0.85rem',
+                  fontWeight: 'bold',
+                  zIndex: 50,
+                  transition: 'top 0.3s ease-in-out'
+                }}>
                   {year}
                 </div>
               );
             })}
 
-            {experiences.map(exp => {
-              const monthsFromEnd = (END_YEAR - exp.endY) * 12 + (END_MONTH - exp.endM);
-              const duration = (exp.endY - exp.startY) * 12 + (exp.endM - exp.startM);
-              const topPx = monthsFromEnd * PIXELS_PER_MONTH;
-              const heightPx = Math.max(duration * PIXELS_PER_MONTH, 160);
+            {experiences.map((exp) => {
+              const isLeft = exp.side === 'left';
+              const duration = Math.max(1, (exp.endY - exp.startY) * 12 + (exp.endM - exp.startM));
+              
+              const topPx = getPositionForDate(exp.endY, exp.endM);
+              const startPx = getPositionForDate(exp.startY, exp.startM);
+              
+              const dotHeight = Math.max(20, startPx - topPx);
 
-              // Ensure higher priority (closer to timeline) naturally sits on top of lower priority (offset) ones
-              const zIndex = hoveredExpId === exp.id ? 200 : (exp.overlapOffset ? 10 : 100);
+              // Unified pill width for parallel visual tracks next to the spine
+              const dotWidth = '0.5rem';
+              const borderSize = '2px';
+              const shadowSize = '2px';
+
+              // Color coding based on user preferences: invite & coderschool (green), mathnasium & assistant (blue), kesselworks & lead instructor (purple)
+              const isGreen = exp.id === 'invite' || exp.id === 'thecoderschool';
+              const isBlue = exp.id === 'mathnasium' || exp.id === 'techknowhow_asst';
+              
+              const accentColor = isGreen 
+                ? 'var(--accent-primary)' 
+                : (isBlue ? '#38bdf8' : 'var(--accent-secondary)');
+                
+              const borderGlassColor = isGreen
+                ? 'rgba(58, 197, 163, 0.15)'
+                : (isBlue ? 'rgba(56, 189, 248, 0.2)' : 'rgba(168, 85, 247, 0.25)');
+
+              // Position range pills further away from the spine to clear the year badges, and offset horizontally if overlapping
+              const dotOffset = exp.overlapOffset
+                ? `calc(-11.11% + 3.0rem)`
+                : 'calc(-11.11% + 1.8rem)';
 
               // Apply horizontal cascade if it has an overlapOffset
-              const isRight = exp.side === 'right';
-              const xShift = exp.overlapOffset ? (isRight ? `${exp.overlapOffset * 3}rem` : `-${exp.overlapOffset * 3}rem`) : '0';
+              const xShift = exp.overlapOffset ? (isLeft ? `-${exp.overlapOffset * 2}rem` : `${exp.overlapOffset * 2}rem`) : '0';
+
+              // Format duration string:
+              const yrs = Math.floor(duration / 12);
+              const mos = duration % 12;
+              let durStr = '';
+              if (yrs > 0) durStr += `${yrs} yr${yrs > 1 ? 's' : ''} `;
+              if (mos > 0 || yrs === 0) durStr += `${mos} mo${mos > 1 ? 's' : ''}`;
 
               return (
                 <div
                   key={exp.id}
-                  className={`timeline-item-abs ${exp.side}`}
-                  style={{ top: `${topPx}px`, height: `${heightPx}px`, zIndex }}
+                  style={{
+                    position: 'absolute',
+                    top: `${topPx}px`,
+                    width: '45%',
+                    [isLeft ? 'left' : 'right']: 0,
+                    zIndex: hoveredExpId === exp.id ? 100 : (exp.overlapOffset ? 10 : 20),
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: isLeft ? 'flex-end' : 'flex-start',
+                    transition: 'top 0.3s ease-in-out'
+                  }}
                   onMouseEnter={() => setHoveredExpId(exp.id)}
                   onMouseLeave={() => setHoveredExpId(null)}
                 >
-                  <div className="timeline-dot-abs"></div>
-                  <div className="glass-panel" style={{ left: xShift, transition: 'left 0.4s ease, all 0.3s ease' }}>
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                      <div style={{ background: '#ffffff', padding: '0.5rem', borderRadius: '8px', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <img src={exp.logo} alt={`${exp.title} Logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                          <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{exp.title}</h3>
-                          <span style={{ color: 'var(--accent-primary)', fontWeight: '500', fontSize: '0.9rem' }}>{exp.dateStr}</span>
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    {/* The Timeline Dot */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '1.1rem',
+                        width: dotWidth,
+                        height: `${dotHeight}px`,
+                        borderRadius: '999px',
+                        background: accentColor,
+                        border: `${borderSize} solid var(--bg-primary)`,
+                        boxShadow: `0 0 0 ${shadowSize} var(--border-glass)`,
+                        [isLeft ? 'right' : 'left']: dotOffset,
+                        transition: 'top 0.3s ease-in-out, height 0.3s ease-in-out'
+                      }}
+                    ></div>
+
+                    {/* Timeline Card Container */}
+                    <div
+                      className="glass-panel"
+                      style={{
+                        width: '100%',
+                        padding: '0.85rem 1rem',
+                        borderRadius: '12px',
+                        transition: 'transform 0.2s ease',
+                        textAlign: isLeft ? 'right' : 'left',
+                        position: 'relative',
+                        transform: `translateX(${xShift})`,
+                        border: `1px solid ${borderGlassColor}`
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.transform = `translateX(${xShift}) translateY(-5px)` }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = `translateX(${xShift})` }}
+                    >
+                      {/* Card Content */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: isLeft ? 'row-reverse' : 'row', alignItems: 'center', gap: '0.6rem' }}>
+                          <div style={{ background: '#ffffff', padding: '0.3rem', borderRadius: '6px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <img src={exp.logo} alt={`${exp.title} Logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                          </div>
+                          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: isLeft ? 'flex-end' : 'flex-start' }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                              {exp.dateStr} • {durStr.trim()}
+                            </span>
+                            <h3 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0' }}>{exp.title}</h3>
+                            <h4 style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-secondary)', margin: 0 }}>{exp.role}</h4>
+                          </div>
                         </div>
-                        <h4 style={{ color: 'var(--text-secondary)', fontWeight: '400', margin: '0.25rem 0 0 0', fontSize: '1rem' }}>{exp.role}</h4>
+                        
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', marginTop: '0.2rem', marginBottom: '0', lineHeight: '1.35' }}>
+                          {exp.shortDesc}
+                        </p>
+
+                        {/* Bullet Points */}
+                        <div style={{
+                          maxHeight: hoveredExpId === exp.id ? '300px' : '0px',
+                          opacity: hoveredExpId === exp.id ? 1 : 0,
+                          overflow: 'hidden',
+                          transition: 'max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out',
+                          marginTop: hoveredExpId === exp.id ? '0.6rem' : '0'
+                        }}>
+                          <ul style={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            gap: '0.4rem', 
+                            fontSize: '0.8rem', 
+                            color: 'var(--text-secondary)',
+                            listStyleType: 'none',
+                            paddingLeft: isLeft ? '0' : '1.25rem',
+                            paddingRight: isLeft ? '1.25rem' : '0',
+                            textAlign: isLeft ? 'right' : 'left'
+                          }}>
+                            {exp.bullets.map((bullet, idx) => (
+                              <li key={idx} style={{ position: 'relative' }}>
+                                {isLeft ? (
+                                  <>
+                                    <span style={{ position: 'absolute', right: '-1.25rem', color: accentColor }}>•</span>
+                                    {bullet}
+                                  </>
+                                ) : (
+                                  <>
+                                    <span style={{ position: 'absolute', left: '-1.25rem', color: accentColor }}>•</span>
+                                    {bullet}
+                                  </>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-
-                    <p className="short-desc">{exp.shortDesc}</p>
-
-                    <div className="full-desc">
-                      <ul style={{ color: 'var(--text-secondary)', paddingLeft: '1.2rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem' }}>
-                        {exp.bullets.map((bullet, idx) => (
-                          <li key={idx}>{bullet}</li>
-                        ))}
-                      </ul>
                     </div>
                   </div>
                 </div>
