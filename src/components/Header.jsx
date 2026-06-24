@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useBreakpoints } from '../hooks/useBreakpoints';
 
 const Header = () => {
   const location = useLocation();
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const { isTablet: isMobile } = useBreakpoints();
 
   const scrollToSection = (id) => {
     setIsMenuOpen(false); // Close menu when clicking a link
@@ -36,7 +30,7 @@ const Header = () => {
     }, 50);
   };
 
-  const isMobile = windowWidth < 768;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 100, background: 'var(--bg-glass)', backdropFilter: 'blur(12px)', padding: '0.75rem 0', borderBottom: '1px solid var(--border-glass)' }}>
