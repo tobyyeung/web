@@ -18,6 +18,11 @@ const Home = () => {
   const [hoveredExpStretch, setHoveredExpStretch] = useState(0);
   const [staticStretches, setStaticStretches] = useState({});
   const cardRefs = useRef({});
+  
+  // Typewriter effect state
+  const fullDescription = "A CS & Econ student @ UIUC, specializing in building full-stack apps, containerized microservices, and AI systems.";
+  const [typedText, setTypedText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
 
   const { windowWidth, isMobileSm, isMobileLg, isDesktopSm } = useBreakpoints();
 
@@ -28,6 +33,34 @@ const Home = () => {
 
   useEffect(() => {
     setProjects(getProjects());
+    
+    // Typewriter effect logic
+    let typeInterval;
+    
+    const startTyping = () => {
+      setIsTyping(true);
+      setTypedText("");
+      let currentIndex = 0;
+      
+      typeInterval = setInterval(() => {
+        if (currentIndex <= fullDescription.length) {
+          setTypedText(fullDescription.slice(0, currentIndex));
+          currentIndex++;
+        } else {
+          clearInterval(typeInterval);
+          setIsTyping(false);
+        }
+      }, 50); // Typing speed
+    };
+
+    startTyping();
+    // Repeat every 2 minutes (120,000 ms)
+    const repeatInterval = setInterval(startTyping, 120000);
+
+    return () => {
+      clearInterval(typeInterval);
+      clearInterval(repeatInterval);
+    };
   }, []);
 
   useEffect(() => {
@@ -188,8 +221,9 @@ const Home = () => {
               <span style={{ fontSize: '2.5rem', color: 'var(--text-primary)', fontWeight: '500' }}>Hi, I'm</span>
               <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block' }}>Toby Yeung</span>
             </h1>
-            <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6' }}>
-              A CS & Econ student @ UIUC, specializing in building full-stack apps, containerized microservices, and AI systems.
+            <p style={{ fontSize: '1.25rem', color: '#ffffff', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6', minHeight: windowWidth < 600 ? '90px' : '60px' }}>
+              {typedText}
+              <span className="cursor-blink" style={{ opacity: isTyping ? 1 : 0.7 }}>|</span>
             </p>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
               <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">Email Me</a>

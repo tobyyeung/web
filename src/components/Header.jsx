@@ -73,10 +73,10 @@ const Header = () => {
             </button>
           ) : (
             <nav style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-              <button onClick={() => scrollToSection('experience')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Experience</button>
-              <button onClick={() => scrollToSection('projects')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Projects</button>
-              <button onClick={() => scrollToSection('education')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Education</button>
-              <button onClick={() => scrollToSection('skills')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Skills</button>
+              <button onClick={() => scrollToSection('experience')} className="nav-btn">Experience</button>
+              <button onClick={() => scrollToSection('projects')} className="nav-btn">Projects</button>
+              <button onClick={() => scrollToSection('education')} className="nav-btn">Education</button>
+              <button onClick={() => scrollToSection('skills')} className="nav-btn">Skills</button>
               <button onClick={() => scrollToSection('contact')} className="btn btn-primary" style={{ marginLeft: '0', padding: '0.45rem 1rem', fontSize: '1rem', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-full)' }}>Contact Me</button>
             </nav>
           )}
@@ -85,10 +85,10 @@ const Header = () => {
         {/* Mobile Dropdown Nav */}
         {isMobile && isMenuOpen && (
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingTop: '1rem', marginTop: '0.5rem', borderTop: '1px solid var(--border-glass)' }}>
-            <button onClick={() => scrollToSection('experience')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Experience</button>
-            <button onClick={() => scrollToSection('projects')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Projects</button>
-            <button onClick={() => scrollToSection('education')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Education</button>
-            <button onClick={() => scrollToSection('skills')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Skills</button>
+            <button onClick={() => scrollToSection('experience')} className="nav-btn" style={{ textAlign: 'left', padding: '0.5rem 0' }}>Experience</button>
+            <button onClick={() => scrollToSection('projects')} className="nav-btn" style={{ textAlign: 'left', padding: '0.5rem 0' }}>Projects</button>
+            <button onClick={() => scrollToSection('education')} className="nav-btn" style={{ textAlign: 'left', padding: '0.5rem 0' }}>Education</button>
+            <button onClick={() => scrollToSection('skills')} className="nav-btn" style={{ textAlign: 'left', padding: '0.5rem 0' }}>Skills</button>
             <button onClick={() => scrollToSection('contact')} className="btn btn-primary" style={{ marginTop: '0.5rem', padding: '0.6rem 1rem', fontSize: '1rem', textAlign: 'center', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-full)' }}>Contact Me</button>
           </nav>
         )}
