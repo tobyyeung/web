@@ -425,17 +425,17 @@ button {
 
 .animate-project {
   opacity: 0;
-  animation: projectFallIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: projectFallIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .animate-experience {
   opacity: 0;
-  animation: experienceReveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: experienceReveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .animate-education {
   opacity: 0;
-  animation: educationSlideIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: educationSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 @keyframes bounceSubtle {

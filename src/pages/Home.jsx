@@ -63,12 +63,9 @@ const Home = () => {
     };
 
     startTyping();
-    // Repeat every 2 minutes (120,000 ms)
-    const repeatInterval = setInterval(startTyping, 120000);
 
     return () => {
       clearInterval(typeInterval);
-      clearInterval(repeatInterval);
     };
   }, []);
 

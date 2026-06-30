@@ -21,7 +21,7 @@ const ProjectCard = ({ project, onClick, animationIndex, isVisible }) => {
         position: 'relative',
         overflow: 'hidden',
         opacity: isVisible ? undefined : 0,
-        animationDelay: isVisible ? `${animationIndex * 150}ms` : '0ms'
+        animationDelay: isVisible ? `${animationIndex * 200}ms` : '0ms'
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-5px)';

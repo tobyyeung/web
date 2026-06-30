@@ -16,7 +16,7 @@ const EducationCard = ({ institution, url, degree, gpa, courses, initialShowCoun
         padding: '2rem', 
         gap: '2rem',
         opacity: isVisible ? undefined : 0,
-        animationDelay: isVisible ? `${animationIndex * 150}ms` : '0ms'
+        animationDelay: isVisible ? `${animationIndex * 200}ms` : '0ms'
       }}
     >
       <div style={{ flex: '1 1 300px' }}>

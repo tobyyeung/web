@@ -40,7 +40,7 @@ const ExperienceCard = ({
         alignItems: renderAsLeft ? 'flex-end' : 'flex-start',
         transition: isMobileTimeline ? 'none' : 'top 0.3s ease-in-out',
         opacity: isVisible ? undefined : 0,
-        animationDelay: isVisible ? `${animationIndex * 200}ms` : '0ms'
+        animationDelay: isVisible ? `${animationIndex * 250}ms` : '0ms'
       }}
       onMouseEnter={() => setHoveredExpId(exp.id)}
       onMouseLeave={() => setHoveredExpId(null)}
